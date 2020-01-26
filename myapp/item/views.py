@@ -14,76 +14,76 @@ from django.shortcuts import get_object_or_404
 from django.http import Http404
 
 
-class Products(APIView):
-    permission_classes = []
-    def post(self, request, format=None):
-
-        for i in request.data:
-            i['imageUrl'] = i.pop('imageId')
-            serializer = ProductSerializer(data=i)
-            if serializer.is_valid() :
-                serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            # return Response(request.data[0])
-
-
-class Ingredients(APIView):
-    permission_classes = []
-    def get(self, request, format=None):
-        image_name = Ingredient.objects.get(id =1)
-        serializers = IngredientSerializer(image_name)
-        return Response(serializers.data)
-
-    def post(self, request, format=None):
-
-        for i in request.data:
-            serializer = IngredientSerializer(data=i)
-            if serializer.is_valid() :
-                serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            # return Response(request.data[0])
-
-class Score(APIView):
-    def post(self, request, format=None):
-        product_obj = Product.objects.all() # 모든 제품의 데이터 가져오기
-        score_serializers = ProductSerializer(product_obj, many = True) #성분 시리얼라이징
-        count = 0
-        for i in score_serializers.data: # 시리얼라이징한 데이터 순회
-            ingre = i['ingredients']
-            ingre_list = ingre.split(',')
-            oily = 0
-            sensitive = 0
-            dry = 0
-            for lists in ingre_list:
-                ingre_odj = Ingredient.objects.get(name=lists)
-                ingre_serializers = IngreScoreSerializer(ingre_odj)
-                for key, value in ingre_serializers.data.items():
-                    if key == 'oily':
-                        if value == 'O':
-                            oily += 1
-                        elif value == 'X':
-                            oily -= 1
-                    elif key == 'dry':
-                        if value == 'O':
-                            dry += 1
-                        elif value == 'X':
-                            dry -= 1
-                    else:
-                        if value == 'O':
-                            sensitive += 1
-                        elif value == 'X':
-                            sensitive -= 1
-
-                dict={"oilyScore" : oily , "dryScore" : dry, "sensitiveScore" : sensitive}
-                product_update = Product.objects.get(id=i['id'])
-                product_update.oilyScore = oily
-                product_update.dryScore = dry
-                product_update.sensitiveScore = sensitive
-                product_update.save()
-            # skin_status = [oily,dry,sensitive]
-        return Response("success", status=status.HTTP_201_CREATED)
+# class Products(APIView):
+#     permission_classes = []
+#     def post(self, request, format=None):
+#
+#         for i in request.data:
+#             i['imageUrl'] = i.pop('imageId')
+#             serializer = ProductSerializer(data=i)
+#             if serializer.is_valid() :
+#                 serializer.save()
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#             # return Response(request.data[0])
+#
+#
+# class Ingredients(APIView):
+#     permission_classes = []
+#     def get(self, request, format=None):
+#         image_name = Ingredient.objects.get(id =1)
+#         serializers = IngredientSerializer(image_name)
+#         return Response(serializers.data)
+#
+#     def post(self, request, format=None):
+#
+#         for i in request.data:
+#             serializer = IngredientSerializer(data=i)
+#             if serializer.is_valid() :
+#                 serializer.save()
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#             # return Response(request.data[0])
+#
+# class Score(APIView):
+#     def post(self, request, format=None):
+#         product_obj = Product.objects.all() # 모든 제품의 데이터 가져오기
+#         score_serializers = ProductSerializer(product_obj, many = True) #성분 시리얼라이징
+#         count = 0
+#         for i in score_serializers.data: # 시리얼라이징한 데이터 순회
+#             ingre = i['ingredients']
+#             ingre_list = ingre.split(',')
+#             oily = 0
+#             sensitive = 0
+#             dry = 0
+#             for lists in ingre_list:
+#                 ingre_odj = Ingredient.objects.get(name=lists)
+#                 ingre_serializers = IngreScoreSerializer(ingre_odj)
+#                 for key, value in ingre_serializers.data.items():
+#                     if key == 'oily':
+#                         if value == 'O':
+#                             oily += 1
+#                         elif value == 'X':
+#                             oily -= 1
+#                     elif key == 'dry':
+#                         if value == 'O':
+#                             dry += 1
+#                         elif value == 'X':
+#                             dry -= 1
+#                     else:
+#                         if value == 'O':
+#                             sensitive += 1
+#                         elif value == 'X':
+#                             sensitive -= 1
+#
+#                 dict={"oilyScore" : oily , "dryScore" : dry, "sensitiveScore" : sensitive}
+#                 product_update = Product.objects.get(id=i['id'])
+#                 product_update.oilyScore = oily
+#                 product_update.dryScore = dry
+#                 product_update.sensitiveScore = sensitive
+#                 product_update.save()
+#             # skin_status = [oily,dry,sensitive]
+#         return Response("success", status=status.HTTP_201_CREATED)
 
 
 

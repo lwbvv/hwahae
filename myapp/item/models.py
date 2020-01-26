@@ -1,13 +1,6 @@
 from django.db import models
 
 # Create your models here.
-class Item(models.Model):
-    class Meta:
-        app_label = 'item'
-    name = models.CharField(max_length=32)
-    quantity = models.IntegerField()
-
-
 
 class Ingredient(models.Model):
     class Meta:

@@ -19,7 +19,7 @@ class Products(APIView):
     def post(self, request, format=None):
 
         for i in request.data:
-
+            i['imageUrl'] = i.pop('imageId')
             serializer = ProductSerializer(data=i)
             if serializer.is_valid() :
                 serializer.save()
@@ -38,7 +38,6 @@ class Ingredients(APIView):
     def post(self, request, format=None):
 
         for i in request.data:
-            i['imageId'] = i.pop('imageId')
             serializer = IngredientSerializer(data=i)
             if serializer.is_valid() :
                 serializer.save()
@@ -112,28 +111,28 @@ class SaveTables(APIView):
         return Response("success")
 
 
-class Intermediary(APIView):
-
-    def get(self, request, format=None):
-        # product = Product.objects.filter(connect_ingre__id=2)
-        # se = ManySerializer(product, many=True)
-        request.GET['skin_type'] = "asd"
-        sta = request.GET['skin_type']
-        str_split = "-" + st + "Score"
-        return Response(str_split)
-
-
-    def post(self, request, format=None):
-        # count = 0
-        # for data in request.data:
-        #     product = Product.objects.get(id=data['id'])
-        #     list = data['ingredients'].split(',')
-        #     for ingre_list in list:
-        #         ingre = Ingredient.objects.get(name=ingre_list)
-        #         Connect.objects.create(product=product, ingredient=ingre, product_name=product.name, ingre_name=ingre.name)
-        for i in request.data:
-            i['imageId'] = i.pop('imageId')
-            serializer = ProductSerializer(data=i)
-            # if serializer.is_valid() :
-            #     # serializer.save()
-            return Response(i)
+# class Intermediary(APIView):
+#
+#     def get(self, request, format=None):
+#         # product = Product.objects.filter(connect_ingre__id=2)
+#         # se = ManySerializer(product, many=True)
+#         request.GET['skin_type'] = "asd"
+#         sta = request.GET['skin_type']
+#         str_split = "-" + st + "Score"
+#         return Response(str_split)
+#
+#
+#     def post(self, request, format=None):
+#         # count = 0
+#         # for data in request.data:
+#         #     product = Product.objects.get(id=data['id'])
+#         #     list = data['ingredients'].split(',')
+#         #     for ingre_list in list:
+#         #         ingre = Ingredient.objects.get(name=ingre_list)
+#         #         Connect.objects.create(product=product, ingredient=ingre, product_name=product.name, ingre_name=ingre.name)
+#         for i in request.data:
+#             i['imageId'] = i.pop('imageId')
+#             serializer = ProductSerializer(data=i)
+#             # if serializer.is_valid() :
+#             #     # serializer.save()
+#             return Response(i)

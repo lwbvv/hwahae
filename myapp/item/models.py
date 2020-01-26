@@ -31,7 +31,7 @@ class Product(models.Model):
     dryScore = models.IntegerField(null=True,blank=True)
     sensitiveScore = models.IntegerField(null=True,blank=True)
     # connect_ingre = models.ManyToManyField(Ingredient,through='Connect',related_name="ingre_list",blank=True)
-    connect_ingre = models.ManyToManyField(Ingredient,related_name="ingre_list",blank=True)
+    # connect_ingre = models.ManyToManyField(Ingredient,related_name="ingre_list",blank=True)
     class Meta:
         app_label = 'item'
     def __str__(self):

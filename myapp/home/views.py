@@ -36,26 +36,26 @@ class Products(APIView):
             if category == "": #카테고리 파라미터 X
                 products_obj = Product.objects.\
                 all().\
-                order_by(skin_descending_order,price_order).\
-                exclude(connect_ingre__name__in=get_exclude_ingre)
+                order_by(skin_descending_order,price_order)
+                # exclude(connect_ingre__name__in=get_exclude_ingre)
             else: #카테고리 파라미터 O
                 products_obj = Product.objects.\
                 all().\
                 order_by(skin_descending_order,price_order).\
-                filter(category=category).\
-                exclude(connect_ingre__name__in=get_exclude_ingre)
+                filter(category=category)
+                # exclude(connect_ingre__name__in=get_exclude_ingre)
 
         else: #필수 성분 파라미터 O
             if category == "": #카테고리 파라미터 X
                 products_obj = Product.objects.\
                 filter(connect_ingre__name__in=get_include_ingre).\
-                order_by(skin_descending_order,price_order).\
-                exclude(connect_ingre__name__in=get_exclude_ingre)
+                order_by(skin_descending_order,price_order)
+                # exclude(connect_ingre__name__in=get_exclude_ingre)
             else: #카테고리 파라미터 O
                 products_obj = Product.objects.\
                 filter(connect_ingre__name__in=get_include_ingre, category=category).\
-                order_by(skin_descending_order,price_order).\
-                exclude(connect_ingre__name__in=get_exclude_ingre)
+                order_by(skin_descending_order,price_order)
+                # exclude(connect_ingre__name__in=get_exclude_ingre)
 
         serial_products = ProductListSerializer(products_obj[begin_item:last_index], many = True)
 

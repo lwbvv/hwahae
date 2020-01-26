@@ -87,28 +87,28 @@ class Score(APIView):
 
 
 
-class SaveTables(APIView):
-
-    def get(self,request, format=None):
-        product = Product.objects.get(id=1).connect_ingre.all()
-        asd= product.connect_ingre.all()
-        # serializer = ManySerializer(product, many=True)
-        # ingre = Ingredient.objects.get(id=2).ingre_list.all()
-        # serializers = ProSerializer(ingre)
-
-
-        return Response(str(product))
-
-
-    def post(self, request, format=None):
-        # count = 0
-        for data in request.data:
-            product = Product.objects.get(id=data['id'])
-            list = data['ingredients'].split(',')
-            for ingre_list in list:
-                ingre = Ingredient.objects.get(name=ingre_list)
-                product.connect_ingre.add(ingre)
-        return Response("success")
+# class SaveTables(APIView):
+#
+#     def get(self,request, format=None):
+#         product = Product.objects.get(id=1).connect_ingre.all()
+#         asd= product.connect_ingre.all()
+#         # serializer = ManySerializer(product, many=True)
+#         # ingre = Ingredient.objects.get(id=2).ingre_list.all()
+#         # serializers = ProSerializer(ingre)
+#
+#
+#         return Response(str(product))
+#
+#
+#     def post(self, request, format=None):
+#         # count = 0
+#         for data in request.data:
+#             product = Product.objects.get(id=data['id'])
+#             list = data['ingredients'].split(',')
+#             for ingre_list in list:
+#                 ingre = Ingredient.objects.get(name=ingre_list)
+#                 product.connect_ingre.add(ingre)
+#         return Response("success")
 
 
 # class Intermediary(APIView):

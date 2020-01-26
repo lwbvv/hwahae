@@ -13,6 +13,6 @@ urlpatterns = [
     path('product', views.Products.as_view(), name='product'),
     path('ingredients', views.Ingredients.as_view(), name='ingredients'),
     path('score', views.Score.as_view(), name='score'),
-    path('many', views.SaveTables.as_view(), name='many'),
+    # path('many', views.SaveTables.as_view(), name='many'),
     # path('inter', views.Intermediary.as_view(), name='many'),
 ]

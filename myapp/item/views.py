@@ -81,7 +81,7 @@ class Score(APIView):
                 product_update = Product.objects.get(id=i['id'])
                 product_update.oilyScore = oily
                 product_update.dryScore = dry
-                product_update.sensiScore = sensitive
+                product_update.sensitiveScore = sensitive
                 product_update.save()
             # skin_status = [oily,dry,sensitive]
         return Response("success", status=status.HTTP_201_CREATED)

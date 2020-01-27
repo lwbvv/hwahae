@@ -4,9 +4,6 @@ from .models import *
 
 
 
-# admin.site.register(Item)
 admin.site.register(Product)
 admin.site.register(Ingredient)
-# admin.site.register(Comment)
-# admin.site.register(PostLike)
-# admin.site.register(Scrap)
+admin.site.register(Connect)

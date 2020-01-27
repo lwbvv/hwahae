@@ -30,7 +30,7 @@ class Product(models.Model):
     oilyScore = models.IntegerField(null=True,blank=True)
     dryScore = models.IntegerField(null=True,blank=True)
     sensitiveScore = models.IntegerField(null=True,blank=True)
-    # connect_ingre = models.ManyToManyField(Ingredient,through='Connect',related_name="ingre_list",blank=True)
+    connect_ingre = models.ManyToManyField(Ingredient,through='Connect',related_name="ingre_list",blank=True)
     # connect_ingre = models.ManyToManyField(Ingredient,related_name="ingre_list",blank=True)
     class Meta:
         app_label = 'item'
@@ -38,8 +38,6 @@ class Product(models.Model):
         return self.name
 
 
-# class Connect(models.Model):
-#     product= models.ForeignKey(Product,on_delete=models.CASCADE)
-#     product_name = models.CharField(max_length=100)
-#     ingredient= models.ForeignKey(Ingredient,on_delete=models.CASCADE)
-#     ingre_name = models.CharField(max_length=100)
+class Connect(models.Model):
+    product= models.ForeignKey(Product,on_delete=models.CASCADE)
+    ingredient= models.ForeignKey(Ingredient,on_delete=models.CASCADE)

@@ -8,6 +8,11 @@ from rest_framework import status
 from .serializers import *
 
 
+##############################################################################
+#json 데이터 db 저장
+##############################################################################
+
+
 class Products(APIView):
     permission_classes = []
 

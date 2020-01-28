@@ -15,7 +15,9 @@ from .funtion import *
 def index(request):
     return render(request, 'index.html', {})
 
-
+##############################################################################
+#API 작성 부분
+##############################################################################
 
 price_order = 'price' #정렬-오름차순-가격
 required_key = 'skin_type'
@@ -47,27 +49,29 @@ class Products(APIView):
         #공통 쿼리 체이닝
         products_obj = Product.objects.\
         exclude(connect_ingre__name__in=get_exclude_ingre).\
-        order_by(skin_descending_order,price_order)
+        order_by(skin_descending_order)
 
-        if get_include_ingre[0] == "": #필수 성분 파라미터 X
+        #필수 성분 파라미터 X
+        if get_include_ingre[0] == "":
             products_obj = products_obj.all()
 
-        else: #필수 성분 파라미터 O
+        #필수 성분 파라미터 O
+        else:
             products_obj = products_obj.filter(connect_ingre__name__in=get_include_ingre)
 
-        if category != "": #카테고리 파라미터 O
+        #카테고리 파라미터 O
+        if category != "":
             products_obj = products_obj.filter(category=category)
 
+        products_serial = ProductListSerializer(products_obj[begin_item:last_index], many = True)
 
-        serial_products = ProductListSerializer(products_obj[begin_item:last_index], many = True)
-
-        #이미지 Url combine
-        size = len(serial_products.data)
+        #상품 리스트 ImageUrl combine
+        size = len(products_serial.data)
         for count in range(size):
-            serial_products.data[count]['imageUrl']\
-             = ImageParse.thumbnailImage(self,serial_products.data[count]['imageUrl'])
+            products_serial.data[count]['imageUrl']\
+             = UrlCombine.thumbnailImage(self,products_serial.data[count]['imageUrl'])
 
-        return Response(serial_products.data,status=status.HTTP_200_OK)
+        return Response(products_serial.data,status=status.HTTP_200_OK)
 
 
 
@@ -78,33 +82,44 @@ class ProductDetail(APIView):
 
 
     def get(self, request, pk, format=None):
-        detail_obj = self.get_object(pk) #자세히 보기 객체 가져오기
+        detail_obj = self.get_object(pk) #상세 상품 쿼리
+
+        #필수 파라미터 키 확인
         try:
             skin_descending_order = "-" +request.GET[required_key] + "Score" #정렬-내림차순-스킨 타입
         except KeyError:
             result = noneRequiredKey(self,required_key,*request.GET.keys())
             return Response(result, status = status.HTTP_400_BAD_REQUEST)
 
+        #필수 파라미터 벨류 확인
         if badRequiredValueCondition(self,request.GET[required_key]):
             bad_value = badRequiredValue(self, request.GET[required_key])
             return Response(bad_value, status = status.HTTP_400_BAD_REQUEST)
 
-        category = detail_obj.category #하위 목록으로 3개까지 띄워줄 카테고리
+
+
+        category = detail_obj.category #추천 상품의 카테고리
+
+        #추천상품 쿼리셋
         recommend_obj = Product.objects.\
         filter(category=category).\
-        order_by(skin_descending_order,price_order)[0:3]
+        order_by(skin_descending_order)[0:3]
 
-        detail_serial = ProductDetailSerializer(detail_obj)
-        detail_dict = jsonDumpsLoads(self,**detail_serial.data)
-        detail_dict['imageUrl'] = ImageParse.fullImage(self,detail_dict['imageUrl'])
+        #상세 상품 ImageUrl combine
+        detail_serial = ProductDetailSerializer(detail_obj)#상세 상품 직렬화
+        detail_dict = jsonDumpsLoads(self,**detail_serial.data)#딕셔너리로 변환
+        detail_dict['imageUrl'] = UrlCombine.fullImage(self,detail_dict['imageUrl'])
 
-        recommend_serial = ProductRecommendSerializer(recommend_obj, many=True)
+        recommend_serial = ProductRecommendSerializer(recommend_obj, many=True)#추천 상품 직렬화
 
+        #추천 상품 ImageUrl combine
         size = len(recommend_serial.data)
         for count in range(size):
             recommend_serial.data[count]['imageUrl']\
-            = ImageParse.thumbnailImage(self,recommend_serial.data[count]['imageUrl'])
+            = UrlCombine.thumbnailImage(self,recommend_serial.data[count]['imageUrl'])
 
+        #추천 상품 list 형태로 변환 후 0번 인덱스에 추천 상품 결합
         recommend_dict = jsonDumpsLoads(self,*recommend_serial.data)
         recommend_dict.insert(0,detail_dict)
+
         return Response(recommend_dict,status=status.HTTP_200_OK)

@@ -24,3 +24,9 @@ urlpatterns = [
     path('', include('myapp.home.urls')),
     path(r'', views.index),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ]

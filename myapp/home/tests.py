@@ -12,25 +12,25 @@ class ProductsTest(TestCase):
     fixtures = ['myapp/item/fixtures/app-data.json']
 
     def test_required_empty_key_return_404(self):
-        response = self.client.get('/products')
         print("test_required_empty_key_return_404")
+        response = self.client.get('/products')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_required_bad_value_return_404(self):
-        response = self.client.get('/products?skin_type=bad_value')
         print("test_required_bad_value_return_404")
+        response = self.client.get('/products?skin_type=bad_value')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_required_params_return_200(self):
-        list = ['dry','oily','sensitive']
         print("test_required_params_return_200")
+        list = ['dry','oily','sensitive']
         for skin_type in list:
             response = self.client.get(f'/products?skin_type=dry&category={skin_type}')
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_params_category_return_200(self):
-        list = ['basemakeup','maskpack','skincare','suncare']
         print("test_params_category_return_200")
+        list = ['basemakeup','maskpack','skincare','suncare']
         for category in list:
             response = self.client.get(f'/products?skin_type=dry&category={category}')
             self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -64,42 +64,42 @@ class ProductDetailTest(TestCase):
     fixtures = ['myapp/item/fixtures/app-data.json']
 
     def test_bad_pk_return_404(self):
-        print("test_required_bad_pk")
+        print("test_bad_pk_return_404")
         list = ["", "as", "한글"]
         for pk in list:
             response = self.client.get(f'/product/{pk}')
             self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_range_over_pk_return_404(self):
-        print("test_required_bad_pk")
+        print("test_range_over_pk_return_404")
         response = self.client.get('/product/1001')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_required_empty_key_return_404(self):
-        response = self.client.get('/product/1')
         print("test_required_empty_key_return_404")
+        response = self.client.get('/product/1')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_required_bad_value_return_404(self):
-        response = self.client.get('/product/1?skin_type=bad_value')
         print("test_required_bad_value_return_404")
+        response = self.client.get('/product/1?skin_type=bad_value')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_required_params_return_200(self):
-        print("test_required_bad_pk")
+        print("test_required_params_return_200")
         list = ['dry','oily','sensitive']
         for skin_type in list:
             response = self.client.get(f'/product/1?skin_type={skin_type}')
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_range_in_pk_return_404(self):
-        print("test_required_bad_pk")
+        print("test_range_in_pk_return_404")
         for pk in range(1,1000):
             response = self.client.get(f'/product/{pk}?skin_type=dry')
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_required_success_return_200(self):
-        print("test_required_bad_pk")
+        print("test_required_success_return_200")
         list = ['dry','oily','sensitive']
         for skin_type in list:
             response = self.client.get(f'/product/1?skin_type={skin_type}')

@@ -37,15 +37,15 @@ def jsonDumpsLoads(self,*arg,**kw):
         recommend_dict = json.loads(json.dumps(kw))
     return recommend_dict
 
-class ImageParse:
+class UrlCombine:
     baseUrl = "https://grepp-programmers-challenges.s3.ap-northeast-2.amazonaws.com/2020-birdview/"
     thumbnail = "thumbnail/"
     def fullImage(self,str):
         fullImage = "image/"
-        str = ImageParse.baseUrl + fullImage +str+".jpg"
+        str = UrlCombine.baseUrl + fullImage +str+".jpg"
         return str
 
     def thumbnailImage(self,str):
         thumbnail = "thumbnail/"
-        str = ImageParse.baseUrl + thumbnail +str+".jpg"
+        str = UrlCombine.baseUrl + thumbnail +str+".jpg"
         return str

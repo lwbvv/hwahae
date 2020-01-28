@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'myapp.home',
     'myapp.item',
     'rest_framework',
+    'debug_toolbar',
 ]
 
 REST_FRAMEWORK = {
@@ -60,7 +61,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+INTERNAL_IPS = ('220.72.242.246',)
 
 ROOT_URLCONF = 'myapp.urls'
 

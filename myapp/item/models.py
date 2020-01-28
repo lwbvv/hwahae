@@ -3,8 +3,6 @@ from django.db import models
 # Create your models here.
 
 class Ingredient(models.Model):
-    class Meta:
-        app_label = 'item'
     INGREDIENT_EFFECT = (
         ('O', '유익함'),
         ('', '영향없음'),
@@ -14,8 +12,13 @@ class Ingredient(models.Model):
     oily = models.CharField(max_length=10, choices=INGREDIENT_EFFECT)
     dry = models.CharField(max_length=10, choices=INGREDIENT_EFFECT)
     sensitive = models.CharField(max_length=10,choices=INGREDIENT_EFFECT)
+
+    class Meta:
+        app_label = 'item'
+
     def __str__(self):
         return self.name
+
 
 
 class Product(models.Model):
@@ -31,9 +34,11 @@ class Product(models.Model):
     dryScore = models.IntegerField(null=True,blank=True)
     sensitiveScore = models.IntegerField(null=True,blank=True)
     connect_ingre = models.ManyToManyField(Ingredient,through='Connect',related_name="ingre_list",blank=True)
-    # connect_ingre = models.ManyToManyField(Ingredient,related_name="ingre_list",blank=True)
+
     class Meta:
         app_label = 'item'
+        ordering = ['price',]
+
     def __str__(self):
         return self.name
 
